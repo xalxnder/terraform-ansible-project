@@ -26,3 +26,19 @@ resource "aws_internet_gateway" "architech_internet_gateway" {
   }
 
 }
+
+resource "aws_route_table" "architech_public_route" {
+  vpc_id = aws_vpc.architech_vpc.id
+
+  tags = {
+    Name = "architech_public_route"
+  }
+}
+
+resource "aws_route" "default_route" {
+  route_table_id = aws_route_table.architech_public_route.id
+  # "0.0.0.0/0" - Anything that is destined for the outside world will hit this route
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.architech_internet_gateway.id
+
+}
