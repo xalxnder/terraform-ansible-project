@@ -1,3 +1,7 @@
+data "aws_availability_zones" "available" {
+
+}
+
 resource "random_id" "random" {
   byte_length = 2
 }
@@ -16,7 +20,6 @@ resource "aws_vpc" "architech_vpc" {
   }
 
 }
-
 
 resource "aws_internet_gateway" "architech_internet_gateway" {
   vpc_id = aws_vpc.architech_vpc.id
@@ -48,5 +51,16 @@ resource "aws_default_route_table" "architech_private_route" {
 
   tags = {
     Name = "architech_private_route"
+  }
+}
+
+resource "aws_subnet" "architech_public_subnet" {
+  vpc_id                  = aws_vpc.architech_vpc.id
+  cidr_block              = var.public_cidrs
+  map_public_ip_on_launch = true
+  availability_zone       = data.aws_availability_zones.available.names[0]
+
+  tags = {
+    Name = "arhitech_public"
   }
 }
