@@ -42,3 +42,11 @@ resource "aws_route" "default_route" {
   gateway_id             = aws_internet_gateway.architech_internet_gateway.id
 
 }
+
+resource "aws_default_route_table" "architech_private_route" {
+  default_route_table_id = aws_vpc.architech_vpc.id
+
+  tags = {
+    Name = "architech_private_route"
+  }
+}
