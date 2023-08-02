@@ -1,3 +1,6 @@
+locals {
+  zones = data.aws_availability_zones.available.names
+}
 data "aws_availability_zones" "available" {
 
 }
@@ -55,12 +58,26 @@ resource "aws_default_route_table" "architech_private_route" {
 }
 
 resource "aws_subnet" "architech_public_subnet" {
+  count                   = length(var.public_cidrs)
   vpc_id                  = aws_vpc.architech_vpc.id
-  cidr_block              = var.public_cidrs
+  cidr_block              = var.public_cidrs[count.index]
   map_public_ip_on_launch = true
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone       = local.zones[count.index]
 
   tags = {
-    Name = "arhitech_public"
+    Name = "arhitech_public-${count.index + 1}"
   }
 }
+
+resource "aws_subnet" "architech_private_subnet" {
+  count                   = length(var.private_cidrs)
+  vpc_id                  = aws_vpc.architech_vpc.id
+  cidr_block              = var.private_cidrs[count.index]
+  map_public_ip_on_launch = false
+  availability_zone       = local.zones[count.index]
+
+  tags = {
+    Name = "arhitech_private-${count.index + 1}"
+  }
+}
+
