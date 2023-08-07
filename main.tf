@@ -58,9 +58,9 @@ resource "aws_default_route_table" "architech_private_route" {
 }
 
 resource "aws_subnet" "architech_public_subnet" {
-  count                   = length(var.public_cidrs)
+  count                   = length(local.zones)
   vpc_id                  = aws_vpc.architech_vpc.id
-  cidr_block              = var.public_cidrs[count.index]
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index)
   map_public_ip_on_launch = true
   availability_zone       = local.zones[count.index]
 
@@ -70,9 +70,10 @@ resource "aws_subnet" "architech_public_subnet" {
 }
 
 resource "aws_subnet" "architech_private_subnet" {
-  count                   = length(var.private_cidrs)
+  # All private subnets will fall back to the DEFAULT route table
+  count                   = length(local.zones)
   vpc_id                  = aws_vpc.architech_vpc.id
-  cidr_block              = var.private_cidrs[count.index]
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, length(local.zones) + count.index)
   map_public_ip_on_launch = false
   availability_zone       = local.zones[count.index]
 
@@ -81,3 +82,40 @@ resource "aws_subnet" "architech_private_subnet" {
   }
 }
 
+resource "aws_route_table_association" "architech_public_association" {
+  count          = length(local.zones)
+  subnet_id      = aws_subnet.architech_public_subnet[count.index].id
+  route_table_id = aws_route_table.architech_public_route.id
+
+}
+
+
+
+resource "aws_security_group" "architech_security" {
+  name        = "public_security_group"
+  description = "Security group for public instances"
+  vpc_id      = aws_vpc.architech_vpc.id
+
+}
+
+resource "aws_security_group_rule" "ingress_all" {
+  #Traffic coming in
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = [var.MY_IP]
+  security_group_id = aws_security_group.architech_security.id
+
+}
+
+resource "aws_security_group_rule" "egress_all" {
+  #Traffic going out
+  type              = "egress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.architech_security.id
+
+}
