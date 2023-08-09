@@ -119,9 +119,3 @@ resource "aws_security_group_rule" "egress_all" {
   security_group_id = aws_security_group.architech_security.id
 
 }
-
-resource "aws_key_pair" "main_key" {
-  key_name   = "main_key"
-  public_key = file(var.TERRAFORM_KEY)
-
-}

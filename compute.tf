@@ -15,10 +15,17 @@ data "aws_ami" "server_ami" {
 
 }
 
+resource "aws_key_pair" "main_key" {
+  key_name   = "main_key"
+  public_key = file(var.TERRAFORM_KEY)
+
+}
+
 resource "aws_instance" "architech_main" {
   count                  = var.main_instance_count
   instance_type          = var.main_instance_type
   ami                    = data.aws_ami.server_ami.id
+  key_name               = aws_key_pair.main_key.id
   vpc_security_group_ids = [aws_security_group.architech_security.id]
   subnet_id              = aws_subnet.architech_public_subnet[count.index].id
   root_block_device {
