@@ -18,3 +18,10 @@ variable "main_vol_size" {
   default = 8
 }
 
+
+variable "main_instance_count" {
+  type    = number
+  default = 1
+
+}
+
