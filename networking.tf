@@ -83,7 +83,7 @@ resource "aws_subnet" "architech_private_subnet" {
 
 resource "aws_route_table_association" "architech_public_association" {
   count          = length(local.zones)
-  subnet_id      = aws_subnet.architech_public_subnet[count.index].id
+  subnet_id      = aws_subnet.architech_public_subnet.*.id[count.index]
   route_table_id = aws_route_table.architech_public_route.id
 
 }
