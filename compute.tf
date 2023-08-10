@@ -28,6 +28,7 @@ resource "aws_instance" "architech_main" {
   key_name               = aws_key_pair.main_key.id
   vpc_security_group_ids = [aws_security_group.architech_security.id]
   subnet_id              = aws_subnet.architech_public_subnet[count.index].id
+  user_data              = templatefile("./main-user-data.tpl", { new_hostname = "architech_main-${random_id.architech_node_id[count.index].dec}" })
   root_block_device {
     volume_size = var.main_vol_size
   }
