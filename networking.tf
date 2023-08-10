@@ -50,8 +50,7 @@ resource "aws_route" "default_route" {
 }
 
 resource "aws_default_route_table" "architech_private_route" {
-  default_route_table_id = aws_vpc.architech_vpc.id
-
+  default_route_table_id = aws_vpc.architech_vpc.default_route_table_id
   tags = {
     Name = "architech_private_route"
   }
