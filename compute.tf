@@ -37,6 +37,11 @@ resource "aws_instance" "architech_main" {
     Name = "architech_main-${random_id.architech_node_id[count.index].dec}"
 
   }
+
+  provisioner "local-exec" {
+    command = "printf '\n${self.public_ip}' >> aws_hosts"
+
+  }
 }
 
 
