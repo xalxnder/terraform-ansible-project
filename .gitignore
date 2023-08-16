@@ -38,3 +38,4 @@ backends.tf
 
 
 aws_hosts
+settings.json
