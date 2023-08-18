@@ -55,4 +55,10 @@ resource "null_resource" "grafana_install" {
   }
 }
 
+output "grafana_url" {
+
+  value = { for i in aws_instance.architech_main[*] : i.tags.Name => "{i.public_ip}:3000" }
+
+}
+
 
