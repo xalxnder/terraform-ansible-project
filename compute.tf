@@ -42,7 +42,7 @@ resource "aws_instance" "architech_main" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "sed -i '/^[0-9]/d' aws_hosts"
+    command = "sed -i '' '/^[0-9]/d' aws_hosts"
   }
 }
 
@@ -50,14 +50,14 @@ resource "aws_instance" "architech_main" {
 resource "null_resource" "grafana_install" {
   depends_on = [aws_instance.architech_main]
   provisioner "local-exec" {
-    command = "ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key.pub playbooks/grafana.yml"
+    command = "ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/grafana.yml"
 
   }
 }
 
 output "grafana_url" {
 
-  value = { for i in aws_instance.architech_main[*] : i.tags.Name => "{i.public_ip}:3000" }
+  value = { for i in aws_instance.architech_main[*] : i.tags.Name => "${i.public_ip}:3000" }
 
 }
 
