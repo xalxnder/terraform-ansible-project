@@ -50,7 +50,7 @@ resource "aws_instance" "architech_main" {
 resource "null_resource" "grafana_install" {
   depends_on = [aws_instance.architech_main]
   provisioner "local-exec" {
-    command = "ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/grafana.yml"
+    command = "ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/main_playbook.yml"
 
   }
 }
