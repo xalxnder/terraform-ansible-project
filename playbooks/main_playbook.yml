@@ -3,6 +3,9 @@
   hosts: main
   become: yes
   remote_user: ubuntu
+  vars:
+    listen_address: 0.0.0.0
+    listen_port: 9090
 
   tasks:
     - name: download apt key
@@ -70,16 +73,16 @@
         owner: prometheus
         group: prometheus
       loop:
-        - /home/ubuntu/prometheus-2.30.3.linux-amd64/prometheus
-        - /home/ubuntu/prometheus-2.30.3.linux-amd64/promtool
+        - /home/ubuntu/prometheus-2.46.0.linux-amd64/prometheus
+        - /home/ubuntu/prometheus-2.46.0.linux-amd64/promtool
     - name: Copy more files
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: /etc/prometheus
         remote_src: yes
       loop:
-        - /home/ubuntu/prometheus-2.30.3.linux-amd64/consoles
-        - /home/ubuntu/prometheus-2.30.3.linux-amd64/console_libraries
+        - /home/ubuntu/prometheus-2.46.0.linux-amd64/consoles
+        - /home/ubuntu/prometheus-2.46.0.linux-amd64/console_libraries
     - name: Create Config File
       ansible.builtin.template:
         src: prometheus.yml.j2
