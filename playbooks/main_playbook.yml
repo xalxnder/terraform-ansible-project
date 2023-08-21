@@ -1,7 +1,7 @@
 ---
 - name: Grafana_Prometheus
   hosts: main
-  become: yes
+  become: true
   remote_user: ubuntu
   vars:
     listen_address: 0.0.0.0
@@ -20,11 +20,11 @@
     - name: Update apt cache and install Grafana
       ansible.builtin.apt:
         name: grafana
-        update_cache: yes
+        update_cache: true
     - name: Ensure Grafana is started and enabled
       ansible.builtin.systemd:
         name: grafana-server
-        enabled: yes
+        enabled: true
         state: started
     - name: Download Prometheus
       get_url:
@@ -34,7 +34,7 @@
       ansible.builtin.unarchive:
         src: /home/ubuntu/prometheus-2.46.0.linux-amd64.tar.gz
         dest: /home/ubuntu/
-        remote_src: yes
+        remote_src: true
     - name: Create Prometheus group
       ansible.builtin.group:
         name: prometheus
@@ -48,7 +48,7 @@
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
-        recurse: yes
+        recurse: true
         owner: prometheus
         group: prometheus
       loop:
@@ -68,7 +68,7 @@
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: /usr/local/bin
-        remote_src: yes
+        remote_src: true
         mode: "0755"
         owner: prometheus
         group: prometheus
@@ -79,7 +79,7 @@
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: /etc/prometheus
-        remote_src: yes
+        remote_src: true
       loop:
         - /home/ubuntu/prometheus-2.46.0.linux-amd64/consoles
         - /home/ubuntu/prometheus-2.46.0.linux-amd64/console_libraries
@@ -94,5 +94,5 @@
     - name: Make sure Prometheus is started
       ansible.builtin.systemd:
         state: started
-        enabled: yes
+        enabled: true
         name: prometheus
