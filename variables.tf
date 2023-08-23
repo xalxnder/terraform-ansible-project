@@ -1,5 +1,6 @@
 variable "MY_IP" {}
 variable "TERRAFORM_KEY" {}
+variable "TERRAFORM_CREDENTIALS" {}
 
 
 variable "vpc_cidr" {
