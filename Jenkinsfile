@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Init_'){
+        stage('Init'){
             steps {
                 sh 'ls'
                 sh 'export TF_IN_AUTOMATION=true'
