@@ -13,5 +13,16 @@ pipeline {
 
             }
         } 
+
+        stage('Apply') {
+            steps {
+                sh 'terraform plan -no-color'
+            }
+        }
+
+        stage('Destroy')
+            steps {
+                sh 'terraform destroy -no-color'
+            }
     }
 }
