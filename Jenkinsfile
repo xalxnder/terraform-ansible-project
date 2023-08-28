@@ -19,7 +19,11 @@ pipeline {
                 sh 'terraform apply -auto-approve -no-color'
             }
         }
-
+        stage('Ansible'){
+            steps {
+                ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/main-playbook.yml')
+            }
+        }
         stage('Destroy'){
             steps {
                 sh 'terraform destroy -auto-approve -no-color'
