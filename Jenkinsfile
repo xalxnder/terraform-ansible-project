@@ -25,6 +25,12 @@ pipeline {
             }
         }
 
+         stage('Testing'){
+            steps {
+                sh 'ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/service_tests.yml'
+            }
+        }
+
   }
   post {
     success {
