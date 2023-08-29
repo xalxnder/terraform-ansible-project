@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Ansible'){
             steps {
-                ansiblePlaybook(installation: '/Library/Frameworks/Python.framework/Versions/3.11/bin', credentialsId: 'ec2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/main_playbook.yml')
+                sh 'ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/main_playbook.yml'
             }
         }
         stage('Destroy'){
