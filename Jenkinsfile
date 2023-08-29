@@ -24,10 +24,15 @@ pipeline {
                 sh 'ansible-playbook -i aws_hosts --key-file /Users/xalexander/.ssh/architech_key playbooks/main_playbook.yml'
             }
         }
-        stage('Destroy'){
-            steps {
-                sh 'terraform destroy -auto-approve -no-color'
-            }
+
+  }
+  post {
+    success {
+        echo "Success!!!"
     }
-}
+
+    failure {
+        sh 'terraform destroy -auto-approve -no-color'
+    }
+  }
 }
