@@ -2,7 +2,7 @@
 
 1. Configures infrastructure with Terraform
 2. Deploys to AWS
-3. Ansible provisions the infrastructure with Prometheus
+3. Ansible provisions the infrastructure with Prometheus and Grafana
 
 
 # Why?
