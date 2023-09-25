@@ -1,6 +1,7 @@
 ---
 - name: Ensure Grafana and Prometheus are accessible
   hosts: main
+  remote_user: ubuntu
   gather_facts: true
   tasks:
     - name: Grafana
